@@ -19,6 +19,7 @@ function Sphere() {
   const geometry = new THREE.SphereGeometry( 2, 32, 16 );
   const material = new THREE.MeshBasicMaterial( {color: 0x808080, transparent: true, opacity: 0.5} );
   const sphere = new THREE.Mesh( geometry, material );
+  sphere.position.set( 0, 0, 0 );
   return sphere;
 
 }
@@ -65,33 +66,35 @@ const text = loader.load(
 
   function (droidFont) {
 
-    const zeroGeometry = new TextGeometry( '|0>', {depth: 0.1, size: 0.5, font: droidFont} );
-    const zeroMaterial = new THREE.MeshNormalMaterial();
+    const zeroGeometry = new TextGeometry( '|0>', {depth: 0.1, size: 0.3, font: droidFont} );
+    const zeroMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
     const zeroMesh = new THREE.Mesh( zeroGeometry, zeroMaterial );
     zeroMesh.position.y = -2.7;
-    zeroMesh.position.x = -0.5;
-    scene.add( zeroMesh );
+    zeroMesh.position.x = -0.3;
 
-    const oneGeometry = new TextGeometry( '|1>', {depth: 0.1, size: 0.5, font: droidFont} );
-    const oneMaterial = new THREE.MeshNormalMaterial();
+    const oneGeometry = new TextGeometry( '|1>', {depth: 0.1, size: 0.3, font: droidFont} );
+    const oneMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
     const oneMesh = new THREE.Mesh( oneGeometry, oneMaterial );
     oneMesh.position.y = 2.7;
-    oneMesh.position.x = -0.5;
-    scene.add( oneMesh );
+    oneMesh.position.x = -0.3;
 
-    const plusGeometry = new TextGeometry( '|+>', { depth: 0.1, size: 0.5, font: droidFont } );
-    const plusMaterial = new THREE.MeshNormalMaterial();
+    const plusGeometry = new TextGeometry( '|+>', { depth: 0.1, size: 0.3, font: droidFont } );
+    const plusMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
     const plusMesh = new THREE.Mesh( plusGeometry, plusMaterial );
-    plusMesh.position.x = 2;
-    scene.add( plusMesh );
+    plusMesh.position.x = 2.7;
 
-    const minusGeometry = new TextGeometry( '|->', { depth: 0.1, size: 0.5, font: droidFont } );
-    const minusMaterial = new THREE.MeshNormalMaterial();
+    const minusGeometry = new TextGeometry( '|->', { depth: 0.1, size: 0.3, font: droidFont } );
+    const minusMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
     const minusMesh = new THREE.Mesh( minusGeometry, minusMaterial );
     minusMesh.position.x = -3;
-    scene.add( minusMesh );
-  } 
 
+    const textGroup = new THREE.Group();
+    textGroup.add( zeroMesh, oneMesh, plusMesh, minusMesh );
+    scene.add(textGroup);
+    
+    return textGroup;
+
+  }
 )
 
 
