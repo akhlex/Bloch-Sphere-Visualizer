@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/examples/jsm/Addons.js';
 
+//Basic Setup
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 const renderer = new THREE.WebGLRenderer();
@@ -11,56 +12,51 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
 const controls = new OrbitControls( camera, renderer.domElement );
+controls.enableDamping = true;
 
-camera.position.z = 5;
+camera.position.z = 4;
 
-function Sphere() {
-  
-  const geometry = new THREE.SphereGeometry( 2, 32, 16 );
-  const material = new THREE.MeshBasicMaterial( {color: 0x808080, transparent: true, opacity: 0.5} );
-  const sphere = new THREE.Mesh( geometry, material );
-  sphere.position.set( 0, 0, 0 );
-  return sphere;
+//Sphere Definition  
+const sphereGeometry = new THREE.SphereGeometry( 1 );
+const sphereMaterial = new THREE.MeshBasicMaterial( {color: 0x808080, transparent: true, opacity: 0.5} );
+const sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
+sphere.position.set( 0, 0, 0 );
 
-}
 
-function Arrow() {
-  
-  const arrowHead = new THREE.ConeGeometry( 0.2, 0.8 );
-  arrowHead.translate( 0, 1.6, 0);
-  const headMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
-  const arrowH = new THREE.Mesh( arrowHead, headMaterial );
 
-  const arrowBody = new THREE.CylinderGeometry( 0.06, 0.06, 1.6 );
-  arrowBody.translate( 0, 0.8, 0 );
-  const bodyMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
-  const arrowB = new THREE.Mesh( arrowBody, bodyMaterial ); 
+//Vector Definition
+const arrowHead = new THREE.ConeGeometry( 0.1, 0.4 );
+arrowHead.translate( 0, 0.8, 0);
+const headMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
+const arrowH = new THREE.Mesh( arrowHead, headMaterial );
 
-  const arrow = new THREE.Group();
-  arrow.add( arrowH, arrowB );
-  return arrow;
+const arrowBody = new THREE.CylinderGeometry( 0.03, 0.03, 0.8 );
+arrowBody.translate( 0, 0.4, 0 );
+const bodyMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
+const arrowB = new THREE.Mesh( arrowBody, bodyMaterial );
 
-}
+const arrow = new THREE.Group();
+arrow.add( arrowH, arrowB );
 
-function Axes() {
 
-  const axesP = new THREE.AxesHelper( 2 );
-  axesP.setColors( 0x000000, 0x000000, 0x000000 );
 
-  const axesN = new THREE.AxesHelper( -2 );
-  axesN.setColors( 0x000000, 0x000000, 0x000000 );
+//Axes Definition
+const axesP = new THREE.AxesHelper( 1 );
+axesP.setColors( 0x000000, 0x000000, 0x000000 );
 
-  const axes = new THREE.Group();
-  axes.add( axesP );
-  axes.add( axesN );
+const axesN = new THREE.AxesHelper( -1 );
+axesN.setColors( 0x000000, 0x000000, 0x000000 );
 
-  return axes;
+const axes = new THREE.Group();
+axes.add( axesP );
+axes.add( axesN );
 
-}
 
+
+//Using FontLoader and TextGeometry to label the axes
 const loader = new FontLoader();
 
-const text = loader.load(
+loader.load (
 
   'node_modules/three/examples/fonts/droid/droid_serif_regular.typeface.json',
 
@@ -69,45 +65,49 @@ const text = loader.load(
     const zeroGeometry = new TextGeometry( '|0>', {depth: 0.1, size: 0.3, font: droidFont} );
     const zeroMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
     const zeroMesh = new THREE.Mesh( zeroGeometry, zeroMaterial );
-    zeroMesh.position.y = -2.7;
+    zeroMesh.position.y = -1.5;
     zeroMesh.position.x = -0.3;
 
     const oneGeometry = new TextGeometry( '|1>', {depth: 0.1, size: 0.3, font: droidFont} );
     const oneMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
     const oneMesh = new THREE.Mesh( oneGeometry, oneMaterial );
-    oneMesh.position.y = 2.7;
+    oneMesh.position.y = 1.35;
     oneMesh.position.x = -0.3;
 
     const plusGeometry = new TextGeometry( '|+>', { depth: 0.1, size: 0.3, font: droidFont } );
     const plusMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
     const plusMesh = new THREE.Mesh( plusGeometry, plusMaterial );
-    plusMesh.position.x = 2.7;
+    plusMesh.position.x = 1.15;
+    plusMesh.position.y = -0.05;
 
     const minusGeometry = new TextGeometry( '|->', { depth: 0.1, size: 0.3, font: droidFont } );
     const minusMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
     const minusMesh = new THREE.Mesh( minusGeometry, minusMaterial );
-    minusMesh.position.x = -3;
+    minusMesh.position.x = -1.7;
+    minusMesh.position.y = -0.05;
 
     const textGroup = new THREE.Group();
     textGroup.add( zeroMesh, oneMesh, plusMesh, minusMesh );
     scene.add(textGroup);
-    
-    return textGroup;
 
   }
 )
 
 
 
-
+//Grouping Sphere and Vector together as Qubit, Adding Qubit to scene
 const qubit = new THREE.Group();
-qubit.add( Sphere(), Arrow() );
+qubit.add( sphere, arrow );
 scene.add( qubit );
-scene.add( Axes() );
+scene.add( axes );
 
+
+
+//Animation Loop
 function animate() {
 
   renderer.render( scene, camera );
+  controls.update();
 
 }
 renderer.setAnimationLoop( animate );
