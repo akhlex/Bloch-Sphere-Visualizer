@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/examples/jsm/Addons.js';
-import { res } from './qMath';
 import * as math from 'mathjs';
 
 //Basic Setup
@@ -39,8 +38,8 @@ const vectorB = new THREE.Mesh( vectorBody, bodyMaterial );
 
 const vector = new THREE.Group();
 vector.add( vectorH, vectorB );
-vector.rotateX( math.pi );
 
+// const vector = new THREE.ArrowHelper( new THREE.Vector3( 0, -1, 0 ), new THREE.Vector3( 0, 0, 0 ), 1, 0xff00ff, 0.2, 0.1 );
 
 
 //Axes Definition
@@ -68,31 +67,26 @@ loader.load (
     const zeroGeometry = new TextGeometry( '|0>', {depth: 0.1, size: 0.3, font: droidFont} );
     const zeroMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
     const zeroMesh = new THREE.Mesh( zeroGeometry, zeroMaterial );
-    zeroMesh.position.y = -1.5;
-    zeroMesh.position.x = -0.3;
+    zeroMesh.position.set( -0.3, -1.5, 0);
 
     const oneGeometry = new TextGeometry( '|1>', {depth: 0.1, size: 0.3, font: droidFont} );
     const oneMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
     const oneMesh = new THREE.Mesh( oneGeometry, oneMaterial );
-    oneMesh.position.y = 1.35;
-    oneMesh.position.x = -0.3;
+    oneMesh.position.set( -0.3, 1.35, 0 );
 
-    const plusGeometry = new TextGeometry( '|+>', { depth: 0.1, size: 0.3, font: droidFont } );
-    const plusMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
-    const plusMesh = new THREE.Mesh( plusGeometry, plusMaterial );
-    plusMesh.position.x = 1.15;
-    plusMesh.position.y = -0.05;
+    const xGeometry = new TextGeometry( 'X', { depth: 0.1, size: 0.3, font: droidFont } );
+    const xMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
+    const xMesh = new THREE.Mesh( xGeometry, xMaterial );
+    xMesh.position.set( 1.15, -0.05, 0 );
 
-    const minusGeometry = new TextGeometry( '|->', { depth: 0.1, size: 0.3, font: droidFont } );
-    const minusMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
-    const minusMesh = new THREE.Mesh( minusGeometry, minusMaterial );
-    minusMesh.position.x = -1.7;
-    minusMesh.position.y = -0.05;
+    const yGeometry = new TextGeometry( 'Y', { depth: 0.1, size: 0.3, font: droidFont } );
+    const yMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
+    const yMesh = new THREE.Mesh( yGeometry, yMaterial );
+    yMesh.position.set( -0.13, 0, -1.3 );
 
     const textGroup = new THREE.Group();
-    textGroup.add( zeroMesh, oneMesh, plusMesh, minusMesh );
+    textGroup.add( zeroMesh, oneMesh, xMesh, yMesh );
     scene.add(textGroup);
-    console.log(res);
 
   }
 )
@@ -116,3 +110,41 @@ function animate() {
 
 }
 renderer.setAnimationLoop( animate );
+
+
+//Gate Definitions
+export function x ( element ) {
+  element.addEventListener('click', () => { 
+    console.log( vector.rotation.x ); 
+    vector.rotateX( math.pi ) 
+  });
+}
+
+export function y ( element ) {
+  element.addEventListener('click', () => { 
+    console.log( vector.rotation.z ); 
+    vector.rotateZ( math.pi ) 
+  });
+}
+
+export function z ( element ) {
+  element.addEventListener('click', () => { 
+    console.log( vector.rotation.y ); 
+    vector.rotateY( math.pi ) 
+  });
+}
+
+export function h ( element ) {
+  element.addEventListener('click', () => { 
+    console.log( "Old X: ", vector.rotation.x, "Old Y: ", vector.rotation.y); 
+    vector.rotateX( math.pi ); 
+    vector.rotateY( math.pi / 2 )
+   });
+}
+
+export function reset ( element ) {
+  element.addEventListener('click', () => { 
+    console.clear(); 
+    vector.rotation.set(0, 0, 0) 
+  });
+}
