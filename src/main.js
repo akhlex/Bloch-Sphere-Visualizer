@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/examples/jsm/Addons.js';
+import { res } from './qMath';
+import * as math from 'mathjs';
 
 //Basic Setup
 const scene = new THREE.Scene();
@@ -17,7 +19,7 @@ controls.enableDamping = true;
 camera.position.z = 4;
 
 //Sphere Definition  
-const sphereGeometry = new THREE.SphereGeometry( 1 );
+const sphereGeometry = new THREE.SphereGeometry( 1, 32, 32 );
 const sphereMaterial = new THREE.MeshBasicMaterial( {color: 0x808080, transparent: true, opacity: 0.5} );
 const sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
 sphere.position.set( 0, 0, 0 );
@@ -25,18 +27,19 @@ sphere.position.set( 0, 0, 0 );
 
 
 //Vector Definition
-const arrowHead = new THREE.ConeGeometry( 0.1, 0.4 );
-arrowHead.translate( 0, 0.8, 0);
+const vectorHead = new THREE.ConeGeometry( 0.1, 0.4 );
+vectorHead.translate( 0, 0.8, 0);
 const headMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
-const arrowH = new THREE.Mesh( arrowHead, headMaterial );
+const vectorH = new THREE.Mesh( vectorHead, headMaterial );
 
-const arrowBody = new THREE.CylinderGeometry( 0.03, 0.03, 0.8 );
-arrowBody.translate( 0, 0.4, 0 );
+const vectorBody = new THREE.CylinderGeometry( 0.03, 0.03, 0.8 );
+vectorBody.translate( 0, 0.4, 0 );
 const bodyMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
-const arrowB = new THREE.Mesh( arrowBody, bodyMaterial );
+const vectorB = new THREE.Mesh( vectorBody, bodyMaterial );
 
-const arrow = new THREE.Group();
-arrow.add( arrowH, arrowB );
+const vector = new THREE.Group();
+vector.add( vectorH, vectorB );
+vector.rotateX( math.pi );
 
 
 
@@ -89,6 +92,7 @@ loader.load (
     const textGroup = new THREE.Group();
     textGroup.add( zeroMesh, oneMesh, plusMesh, minusMesh );
     scene.add(textGroup);
+    console.log(res);
 
   }
 )
@@ -97,7 +101,8 @@ loader.load (
 
 //Grouping Sphere and Vector together as Qubit, Adding Qubit to scene
 const qubit = new THREE.Group();
-qubit.add( sphere, arrow );
+qubit.add( sphere );
+qubit.add( vector );
 scene.add( qubit );
 scene.add( axes );
 

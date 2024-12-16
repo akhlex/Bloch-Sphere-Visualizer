@@ -12,6 +12,8 @@
     "vite": "^6.0.1"
   },
   "dependencies": {
+    "gl-matrix": "^3.4.3",
+    "mathjs": "^14.0.1",
     "three": "^0.171.0"
   }
 }
