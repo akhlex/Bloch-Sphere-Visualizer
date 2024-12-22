@@ -1,4 +1,4 @@
-import { log } from "./qMath.js"
+import { log } from "./main.js"
 import { x, y, z, h, reset } from "./main.js"
 
 document.querySelector('#app').innerHTML = `

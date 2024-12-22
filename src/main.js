@@ -146,3 +146,10 @@ export function reset ( element ) {
     console.clear();  
   });
 }
+
+//Log to the console
+export function log ( element ) {
+  element.addEventListener( 'click', () => {
+    console.log( "Hello World" );
+  } )
+}
