@@ -15,6 +15,11 @@ document.querySelector('#app').innerHTML = `
             <button id="z" type="button">Z</button>
             <button id="h" type="button">H</button>
         </div>
+        <div class="values">
+            <p>Angles</p>
+            <p>Polar: </p>
+            <p>Azimuthal</p>
+        </div>
     </div>
 `
 

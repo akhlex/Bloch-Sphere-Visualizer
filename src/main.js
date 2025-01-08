@@ -102,21 +102,10 @@ scene.add( axes );
 
 
 
-//Animation Loop
-function animate() {
-
-  renderer.render( scene, camera );
-  controls.update();
-
-}
-renderer.setAnimationLoop( animate );
-
-
-
 //Gate Definitions
 export function x ( element ) {
   element.addEventListener('click', () => {  
-    vector.rotateOnWorldAxis( new THREE.Vector3( 1, 0, 0), math.pi ); 
+    vector.rotateOnWorldAxis( new THREE.Vector3( 1, 0, 0), math.pi );
   });
 }
 
@@ -128,7 +117,7 @@ export function y ( element ) {
 
 export function z ( element ) {
   element.addEventListener('click', () => { 
-    vector.rotateOnWorldAxis( new THREE.Vector3( 0, 1, 0 ), math.pi ); 
+    vector.rotateOnWorldAxis( new THREE.Vector3( 0, 1, 0 ), math.pi );
   });
 }
 
@@ -150,6 +139,25 @@ export function reset ( element ) {
 //Log to the console
 export function log ( element ) {
   element.addEventListener( 'click', () => {
-    console.log( "Hello World" );
+    console.log("X: ", vector.rotation.x);
+    console.log("Y: ", vector.rotation.z);  
+    console.log("Z: ", vector.rotation.y); 
   } )
 }
+
+function autoRotate () {
+  vector.rotateOnWorldAxis( new THREE.Vector3( 1, 0, 0 ), 0.01);
+  // console.log( vector.rotation.x );
+}
+
+
+
+//Animation Loop
+function animate() {
+
+  autoRotate();
+  renderer.render( scene, camera );
+  controls.update();
+
+}
+renderer.setAnimationLoop( animate );
